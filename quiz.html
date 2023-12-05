@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Results</title>
+    <style>
+        body {
+            background-image: url("https://www.passionateinmarketing.com/wp-content/uploads/2021/10/1633143774192-1.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: white;
+            margin-top: 20px;
+        }
+
+        #quizAnswers {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            margin: 20px auto;
+            max-width: 500px;
+        }
+
+        #userAnswers {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #userAnswers li {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        #quizStats {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        #percentage {
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz Results</h1>
+    <div id="quizAnswers">
+        <h2>Your Answers:</h2>
+        <ul id="userAnswers"></ul>
+    </div>
+    <div id="quizStats">
+        <h2>Quiz Statistics:</h2>
+        <p id="percentage"></p>
+    </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const answersParam = urlParams.get("answers");
+
+        if (answersParam) {
+            const selectedAnswers = JSON.parse(decodeURIComponent(answersParam));
+            const userAnswers = document.getElementById("userAnswers");
+            const percentage = document.getElementById("percentage");
+
+            selectedAnswers.forEach((answer, index) => {
+                const li = document.createElement("li");
+                li.textContent = `Question ${index + 1}: ${answer}`;
+                userAnswers.appendChild(li);
+            });
+
+            // Calculate and display the percentage
+            const totalQuestions = 5; // Adjust to match the total number of questions
+            const correctAnswers = selectedAnswers.filter(answer => answer === "Paris").length; // Change "Paris" to the correct answer
+            const userPercentage = (correctAnswers / totalQuestions) * 100;
+            percentage.textContent = `You answered ${correctAnswers} out of ${totalQuestions} questions correctly (${userPercentage}%)`;
+        } else {
+            // Handle the case when no answers are provided
+            document.getElementById("quizAnswers").textContent = "No answers provided.";
+            document.getElementById("quizStats").style.display = "none";
+        }
+    </script>
+</body>
+</html>
